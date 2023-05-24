@@ -16,5 +16,10 @@ export default async (): Promise<Config> => ({
   coverageDirectory: '<rootDir>/coverage/',
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.([t]sx?)$',
   moduleFileExtensions: ['ts', 'js', 'json'],
-  // testEnvironment: 'node'
+  testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    html: '<html lang="en-US."></html>',
+    url: 'https://jestjs.io/',
+    userAgent: 'Agent/007',
+  }
 })

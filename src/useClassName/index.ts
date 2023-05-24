@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { type ClassRuleType } from './types'
 
-export const getClassName = (classRules: ClassRuleType[]) => {
+export const getClassName = (classRules: ClassRuleType[]): string => {
   return classRules
     .map(([className, rule]) => {
       if (!className) {
@@ -18,6 +18,6 @@ export const getClassName = (classRules: ClassRuleType[]) => {
     .join(' ')
 }
 
-export const useClassName = (classRules: ClassRuleType[]) => {
+export const useClassName = (classRules: ClassRuleType[]): string => {
   return useMemo(() => getClassName(classRules), [classRules])
 }
