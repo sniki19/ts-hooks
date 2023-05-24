@@ -14,4 +14,3 @@ tsconfig.json
 #tests
 /coverage
 jest.config.ts
-*.d.ts
