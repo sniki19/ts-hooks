@@ -1,1 +1,0 @@
-export type ClassRuleType = [className: string | undefined, rule?: boolean | null | undefined]

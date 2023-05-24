@@ -1,60 +1,62 @@
-import { getClassName } from './'
+import { renderHook } from '@testing-library/react'
+import { useClassName } from './'
 
-test('Execute without data', () => {
-  expect(
-    getClassName([])
-  ).toBe('')
-})
+type HookProps = Parameters<typeof useClassName>
+const runHook = (props: HookProps[0]) => {
+  const { result } = renderHook(() => useClassName(props))
 
-test('Execute with class without dependency', () => {
-  expect(
-    getClassName([
+  return result.current
+}
+
+describe('useClassName hook', () => {
+  test('should return empty string', () => {
+    const result = runHook([])
+    expect(result).toBe('')
+
+    const result2 = runHook([
+      [undefined]
+    ])
+    expect(result2).toBe('')
+  })
+
+  test('should return all classes (classes don\'t have dependencies)', () => {
+    const result = runHook([
       ['class1']
     ])
-  ).toBe('class1')
-})
+    expect(result).toBe('class1')
+    expect(result).not.toBe('otherclass')
 
-test('Execute with class with False dependency', () => {
-  expect(
-    getClassName([
-      ['class1', false]
-    ])
-  ).toBe('')
-})
-
-test('Execute with class with True dependency', () => {
-  expect(
-    getClassName([
-      ['class1', true]
-    ])
-  ).toBe('class1')
-})
-
-test('Execute with multi classes', () => {
-  expect(
-    getClassName([
-      ['class1', true],
-      ['class2', true]
-    ])
-  ).toBe('class1 class2')
-})
-
-test('Execute with multi classes and different dependencies', () => {
-  expect(
-    getClassName([
+    const result2 = runHook([
       ['class1'],
-      ['class2', true],
-      ['class3', false],
-      ['class4', true]
+      ['class2']
     ])
-  ).toBe('class1 class2 class4')
-})
+    expect(result2).toBe('class1 class2')
+    expect(result2).not.toBe('otherclass')
+  })
 
-test('Execute give only input data', () => {
-  expect(
-    getClassName([
-      ['class1']
+  test('should return certain classes that have True dependencies', () => {
+    const result = runHook([
+      ['class1', false],
+      ['class2', !!''],
+      ['class3', !!0]
     ])
-  ).not.toBe('otherclass')
-})
+    expect(result).toBe('')
 
+    const result2 = runHook([
+      ['class1', true],
+      ['class2', !!'class2'],
+      ['class3', !!1]
+    ])
+    expect(result2).toBe('class1 class2 class3')
+
+    const result3 = runHook([
+      ['class1', true],
+      ['class2', false],
+      ['class3', !!0],
+      ['class4', !!1],
+      ['class5', !!''],
+      ['class6', !!'class6']
+    ])
+    expect(result3).toBe('class1 class4 class6')
+  })
+})

@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
-import { type ClassRuleType } from './types'
 
-export const getClassName = (classRules: ClassRuleType[]): string => {
+type ClassRuleType = [className: string | undefined, rule?: boolean | null | undefined]
+
+const getClassName = (classRules: ClassRuleType[]): string => {
   return classRules
     .map(([className, rule]) => {
       if (!className) {
