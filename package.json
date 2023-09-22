@@ -1,6 +1,6 @@
 {
-  "name": "rts-hooks",
-  "version": "0.1.2",
+  "name": "react-hooks-tslib",
+  "version": "0.1.1",
   "description": "React typescript hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
